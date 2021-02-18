@@ -1,3 +1,5 @@
+import { IpcRenderer } from "electron";
+
 export interface StateSyncOptions {
     /**
      * Custom list for actions that should never replay across stores
@@ -8,4 +10,9 @@ export interface StateSyncOptions {
      * Prevent replaying actions in the current process
      */
     preventActionReplay?: boolean
+
+    /**
+     * Not necessary if nodeIntegration is enabled.
+     */
+    ipcRenderer?: IpcRenderer
 }

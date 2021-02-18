@@ -1,4 +1,4 @@
-import { ipcRenderer, webContents } from 'electron'
+import { webContents } from 'electron'
 import { Store } from 'redux'
 import { IPCEvents } from './constants'
 import { MainStateSyncEnhancerOptions } from './options/MainStateSyncEnhancerOptions'
@@ -24,7 +24,7 @@ export const processActionRenderer = <A>(
     options: RendererStateSyncEnhancerOptions = {}
 ): void => {
     if (validateAction(action, options.denyList)) {
-        ipcRenderer.send(IPCEvents.ACTION, action)
+        options.ipcRenderer?.send(IPCEvents.ACTION, action)
     }
 }
 

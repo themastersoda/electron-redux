@@ -1,4 +1,3 @@
-import { ipcRenderer } from 'electron'
 import { Action, StoreEnhancer } from 'redux'
 import { IPCEvents } from './constants'
 import { forwardAction } from './forwardAction'
@@ -15,7 +14,10 @@ import { stopForwarding } from './utils'
  * @returns StoreEnhancer
  */
 export const rendererStateSyncEnhancer = (
-    options: RendererStateSyncEnhancerOptions = {}
+    options: RendererStateSyncEnhancerOptions = {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        ipcRenderer: require('electron').ipcRenderer
+    }
 ): StoreEnhancer => (createStore) => {
     return (reducer, state) => {
         const initialState = options.lazyInit ? state : fetchInitialState<typeof state>(options)
@@ -32,7 +34,7 @@ export const rendererStateSyncEnhancer = (
         }
 
         // When receiving an action from main
-        ipcRenderer.on(IPCEvents.ACTION, (_, action: Action) => {
+        options.ipcRenderer?.on(IPCEvents.ACTION, (_, action: Action) => {
             store.dispatch(stopForwarding(action))
         })
 
